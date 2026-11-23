@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState,useContext } from 'react'
 import Card from './Card'
+import MovieContext from '../context/MovieContext'
 
-function MovieList({page,setTotalMovies,searchQuery}) {
+function MovieList({page,setTotalMovies}) {
+  const {searchQuery} = useContext(MovieContext)
 
   const [movies, setMovies] = useState([])
   

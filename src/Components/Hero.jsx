@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import DropDown from './DropDown'
-import CardSection from './CardSection'
+import MovieContext from '../context/MovieContext'
 
 
 
-function Hero({ searchTerm, setSearchTerm, setSearchQuery })  {
+function Hero()  {
+  const { searchTerm, setSearchTerm, setSearchQuery } = useContext(MovieContext)
+  
    
   return (
     <div className='bg-zinc-900 min-h-[300px] px-5 py-12'>

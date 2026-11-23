@@ -10,7 +10,7 @@ function CardSection({searchQuery}) {
     <div className="bg-zinc-950 pb-10">
       <Buttons page={page} setPage={setPage} totalMovies={totalMovies} />
       <br />
-      <MovieList page={page} setTotalMovies={setTotalMovies} searchQuery={searchQuery} />
+      <MovieList page={page} setTotalMovies={setTotalMovies} />
 
       <div></div>
     </div>
