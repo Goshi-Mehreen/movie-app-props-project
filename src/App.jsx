@@ -8,7 +8,6 @@ import CardSection from "./Components/CardSection";
 import MovieDetail from "./Components/MovieDetail";
 import Footer from "./Components/Footer";
 
-import MovieContextProvider from "./context/MovieContextProvider";
 
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -23,7 +22,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <MovieContextProvider>
+      
         <div className="flex min-h-screen flex-col">
 
           <Navbar />
@@ -58,7 +57,7 @@ function App() {
           <Footer />
 
         </div>
-      </MovieContextProvider>
+      
     </BrowserRouter>
   );
 }

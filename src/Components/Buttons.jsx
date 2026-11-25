@@ -47,7 +47,7 @@ function Buttons({ page, setPage, totalMovies }) {
 
       <div className="mt-5 flex flex-wrap justify-center items-center gap-1 text-xs font-bold">
         {/* First / Previous sirf page 2 se aage dikhein */}
-        {page > 1 && (
+        {page > 2 && (
           <>
             <button onClick={() => setPage(1)} className={`${base} ${normal}`}>
               &laquo; First
