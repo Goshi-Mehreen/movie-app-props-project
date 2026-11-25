@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 
@@ -6,8 +7,10 @@ function MovieDetail() {
 
   const [movie, setMovie] = useState(null)
   const [similarMovies, setSimilarMovies] = useState([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+
     const fetchMovieDetail = async () => {
       try {
         const response = await fetch(
@@ -19,6 +22,7 @@ function MovieDetail() {
         if (data.status === 'ok') {
           setMovie(data.data.movie)
         }
+
       } catch (error) {
         console.log(error)
       }
@@ -35,17 +39,51 @@ function MovieDetail() {
         if (data.status === 'ok') {
           setSimilarMovies(data.data.movies || [])
         }
+
       } catch (error) {
         console.log(error)
       }
     }
 
-    fetchMovieDetail()
-    fetchSimilarMovies()
+    const loadPage = async () => {
+      setLoading(true)
+      setMovie(null)
+      setSimilarMovies([])
+
+      try {
+        await Promise.all([
+          fetchMovieDetail(),
+          fetchSimilarMovies()
+        ])
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadPage()
+
   }, [id])
 
+  // Loading
+  if (loading) {
+    return (
+      <div className="bg-zinc-900 min-h-screen flex justify-center items-center">
+        <p className="text-white text-xl animate-pulse">
+          Loading movie details...
+        </p>
+      </div>
+    )
+  }
+
+  // Movie not found
   if (!movie) {
-    return <p className="text-white p-5">Loading...</p>
+    return (
+      <div className="bg-zinc-900 min-h-screen flex justify-center items-center">
+        <p className="text-white text-xl">
+          Movie not found!
+        </p>
+      </div>
+    )
   }
 
   return (
@@ -54,6 +92,7 @@ function MovieDetail() {
       <div className="max-w-6xl mx-auto grid md:grid-cols-[260px_1fr_230px] gap-10">
 
         {/* Left: Poster + Button + Tags */}
+
         <div>
           <img
             src={movie.large_cover_image}
@@ -78,6 +117,7 @@ function MovieDetail() {
         </div>
 
         {/* Center: Movie Details */}
+
         <div>
 
           <h1 className="text-4xl font-bold mb-6">
@@ -93,8 +133,11 @@ function MovieDetail() {
           </p>
 
           {/* Available Qualities */}
+
           <div className="flex flex-wrap items-center gap-2 mb-2">
-            <span className="italic text-lg mr-1">Available in:</span>
+            <span className="italic text-lg mr-1">
+              Available in:
+            </span>
 
             {movie.torrents?.map((torrent, index) => (
               <span
@@ -102,8 +145,11 @@ function MovieDetail() {
                 className="border border-zinc-600 px-3 py-2 rounded text-sm font-semibold"
               >
                 {torrent.quality}.{torrent.type?.toUpperCase()}
+
                 {torrent.video_codec === 'x265' && (
-                  <span className="text-lime-500 text-xs ml-1">x265</span>
+                  <span className="text-lime-500 text-xs ml-1">
+                    x265
+                  </span>
                 )}
               </span>
             ))}
@@ -118,11 +164,14 @@ function MovieDetail() {
           </button>
 
           {/* Ratings */}
+
           <div className="space-y-4">
 
             <div className="flex items-center gap-4">
               <span className="w-16 text-lime-500 text-2xl">♥</span>
-              <span className="text-xl font-bold">{movie.like_count}</span>
+              <span className="text-xl font-bold">
+                {movie.like_count}
+              </span>
             </div>
 
             <div className="flex items-center gap-4">
@@ -131,23 +180,32 @@ function MovieDetail() {
                   IMDb
                 </span>
               </span>
+
               <span className="text-xl font-bold">
                 {movie.rating}
-                <span className="text-zinc-500 text-sm font-normal">/10</span>
+                <span className="text-zinc-500 text-sm font-normal">
+                  /10
+                </span>
               </span>
             </div>
 
             <div className="flex items-center gap-4">
-              <span className="w-16 text-zinc-400 text-sm">Runtime</span>
+              <span className="w-16 text-zinc-400 text-sm">
+                Runtime
+              </span>
+
               <span className="text-xl font-bold">
                 {movie.runtime}
-                <span className="text-zinc-500 text-sm font-normal"> min</span>
+                <span className="text-zinc-500 text-sm font-normal">
+                  min
+                </span>
               </span>
             </div>
 
           </div>
 
           {/* Overview */}
+
           <h2 className="text-xl font-semibold mt-8 mb-2">
             Overview
           </h2>
@@ -159,8 +217,11 @@ function MovieDetail() {
         </div>
 
         {/* Right: Similar Movies */}
+
         <div>
-          <h3 className="font-bold mb-3">Similar Movies</h3>
+          <h3 className="font-bold mb-3">
+            Similar Movies
+          </h3>
 
           <div className="grid grid-cols-2 gap-4">
             {similarMovies.slice(0, 4).map((item) => (
@@ -176,7 +237,6 @@ function MovieDetail() {
         </div>
 
       </div>
-
     </div>
   )
 }
